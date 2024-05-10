@@ -1,3 +1,4 @@
 module.exports = {
-  "/api/user": require("./user"),
+  "/api/user": require("./admin"),
+  "/api/category": require("./category"),
 };
