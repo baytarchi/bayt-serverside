@@ -9,6 +9,7 @@ const categoryValidation = async (Model, category_id) => {
       errorMessage: "",
     };
   }
+
   return {
     error: true,
     errorMessage: "You must select a category!",

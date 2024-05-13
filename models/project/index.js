@@ -1,36 +1,39 @@
 const { model, Schema } = require("mongoose");
 const slugify = require("slugify");
 
-const projectSchema = new Schema({
-  project_slug: {
-    type: String,
-    required: false,
+const projectSchema = new Schema(
+  {
+    project_slug: {
+      type: String,
+      required: false,
+    },
+    project_name: {
+      type: String,
+      required: true,
+    },
+    project_description: {
+      type: String,
+      required: true,
+    },
+    completion_year: {
+      type: String,
+      required: false,
+    },
+    gross_built_area: {
+      type: String,
+      required: false,
+    },
+    project_location: {
+      type: String,
+      required: false,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
   },
-  project_name: {
-    type: String,
-    required: true,
-  },
-  project_description: {
-    type: String,
-    required: true,
-  },
-  completion_year: {
-    type: String,
-    required: false,
-  },
-  gross_built_area: {
-    type: String,
-    required: false,
-  },
-  project_location: {
-    type: String,
-    required: false,
-  },
-  category: {
-    type: String,
-    required: true,
-  },
-});
+  { versionKey: false }
+);
 
 projectSchema.pre("save", function (next) {
   const currentDate = new Date().toISOString().slice(0, 10);

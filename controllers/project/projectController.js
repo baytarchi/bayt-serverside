@@ -1,3 +1,7 @@
+const projectService = require("../../services/project/projectService");
+const categoryHelper = require("../../helper/category/categoryValidation");
+const Category = require("../../models/category");
+
 const addProject = async (req, res) => {
   const {
     project_name,
@@ -8,7 +12,18 @@ const addProject = async (req, res) => {
     category,
   } = req.body;
 
-  const jersey_data = {
+  const { error, errorMessage } = await categoryHelper.categoryValidation(
+    Category,
+    category
+  );
+
+  if (error) {
+    res.status(400).json({
+      message: errorMessage,
+    });
+  }
+
+  const project_data = {
     project_name,
     project_description,
     completion_year,
@@ -16,8 +31,8 @@ const addProject = async (req, res) => {
     project_location,
     category,
   };
-
-  const { message, statusCode } = await jerseyService.addProject(jersey_data);
+  console.log(project_data, "project_data");
+  const { message, statusCode } = await projectService.addProject(project_data);
 
   res.status(statusCode).json({
     message,
