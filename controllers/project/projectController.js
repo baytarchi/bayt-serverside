@@ -9,10 +9,12 @@ const addProject = async (req, res) => {
   } = req.body;
 
   const jersey_data = {
-    jersey_name,
-    jersey_image,
-    price,
-    tag,
+    project_name,
+    project_description,
+    completion_year,
+    gross_built_area,
+    project_location,
+    category,
   };
 
   const { message, statusCode } = await jerseyService.addProject(jersey_data);
