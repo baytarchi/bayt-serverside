@@ -1,5 +1,22 @@
 const Project = require("../../models/project");
 
+const getProjects = async () => {
+  const projects = await Project.find();
+
+  if (!projects) {
+    return {
+      message: "There is no projects",
+      statusCode: 400,
+    };
+  }
+
+  return {
+    message: "Project featched successfully",
+    projects,
+    statusCode: 200,
+  };
+};
+
 const addProject = async (project_data) => {
   const {
     project_name,
@@ -27,10 +44,11 @@ const addProject = async (project_data) => {
 
   return {
     message: "Project created successfully",
-    statusCode: 401,
+    statusCode: 201,
   };
 };
 
 module.exports = {
   addProject,
+  getProjects,
 };

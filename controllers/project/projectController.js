@@ -42,7 +42,7 @@ const addProject = async (req, res) => {
 const getProject = async (req, res) => {
   const { jersey_slug } = req.params;
 
-  const { message, jersey, statusCode } = await jerseyService.getProject(
+  const { message, jersey, statusCode } = await projectService.getProjects(
     jersey_slug
   );
 
@@ -53,11 +53,11 @@ const getProject = async (req, res) => {
 };
 
 const getProjects = async (req, res) => {
-  const { message, jerseys, statusCode } = await jerseyService.getjerseys();
+  const { message, projects, statusCode } = await projectService.getProjects();
 
   res.status(statusCode).json({
     message,
-    jerseys,
+    projects,
   });
 };
 
