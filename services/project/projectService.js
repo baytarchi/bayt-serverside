@@ -1,21 +1,5 @@
 const Project = require("../../models/project");
-
-const getProjects = async () => {
-  const projects = await Project.find();
-
-  if (!projects) {
-    return {
-      message: "There is no projects",
-      statusCode: 400,
-    };
-  }
-
-  return {
-    message: "Project featched successfully",
-    projects,
-    statusCode: 200,
-  };
-};
+const { statusCodes } = require("../../config");
 
 const addProject = async (project_data) => {
   const {
@@ -44,11 +28,46 @@ const addProject = async (project_data) => {
 
   return {
     message: "Project created successfully",
-    statusCode: 201,
+    statusCode: statusCodes.SUCCESSFUL.CREATED,
+  };
+};
+
+const getProjects = async () => {
+  const projects = await Project.find();
+
+  if (!projects) {
+    return {
+      message: "There is no project",
+      statusCode: statusCodes.CLIENT_ERROR.NOT_FOUND,
+    };
+  }
+
+  return {
+    message: "Projects featched successfully",
+    projects,
+    statusCode: statusCodes.SUCCESSFUL.SUCCESS,
+  };
+};
+
+const getProject = async (project_slug) => {
+  const project = await Project.findOne({ project_slug: project_slug });
+
+  if (!project) {
+    return {
+      message: "There is no projects",
+      statusCode: statusCodes.CLIENT_ERROR.NOT_FOUND,
+    };
+  }
+
+  return {
+    message: "Project featched successfully",
+    project,
+    statusCode: statusCodes.SUCCESSFUL.SUCCESS,
   };
 };
 
 module.exports = {
   addProject,
   getProjects,
+  getProject,
 };

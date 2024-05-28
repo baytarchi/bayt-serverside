@@ -1,6 +1,7 @@
 const projectService = require("../../services/project/projectService");
 const categoryHelper = require("../../helper/category/categoryValidation");
 const Category = require("../../models/category");
+const StatusCodes = require("../../config");
 
 const addProject = async (req, res) => {
   const {
@@ -18,7 +19,7 @@ const addProject = async (req, res) => {
   );
 
   if (error) {
-    res.status(400).json({
+    res.status(StatusCodes.CLIENT_ERROR.BAD_REQUEST).json({
       message: errorMessage,
     });
   }
@@ -31,24 +32,11 @@ const addProject = async (req, res) => {
     project_location,
     category,
   };
-  console.log(project_data, "project_data");
+
   const { message, statusCode } = await projectService.addProject(project_data);
 
   res.status(statusCode).json({
     message,
-  });
-};
-
-const getProject = async (req, res) => {
-  const { jersey_slug } = req.params;
-
-  const { message, jersey, statusCode } = await projectService.getProjects(
-    jersey_slug
-  );
-
-  res.status(statusCode).json({
-    message,
-    jersey,
   });
 };
 
@@ -61,8 +49,21 @@ const getProjects = async (req, res) => {
   });
 };
 
+const getProject = async (req, res) => {
+  const { project_slug } = req.params;
+
+  const { message, project, statusCode } = await projectService.getProject(
+    project_slug
+  );
+
+  res.status(statusCode).json({
+    message,
+    project,
+  });
+};
+
 module.exports = {
+  addProject,
   getProjects,
   getProject,
-  addProject,
 };
