@@ -1,0 +1,40 @@
+const nodemailer = require("nodemailer");
+
+const sendMail = async (subject, body) => {
+  const senderMail = process.env.EMAIL_USERNAME;
+  const senderPassword = process.env.EMAIL_PASSWORD;
+
+  console.log(senderMail);
+  console.log(senderPassword);
+
+  const mailOptions = {
+    from: senderMail,
+    to: senderMail,
+    subject: subject,
+    replyTo: senderMail,
+    html: body,
+  };
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: senderMail,
+      pass: senderPassword,
+    },
+  });
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully");
+    return true;
+  } catch (error) {
+    console.log("Failed to send email", error);
+    return false;
+  }
+};
+
+module.exports = {
+  sendMail,
+};
