@@ -2,8 +2,6 @@ const mailService = require("../../helper/mailer/mailer");
 const mailerBody = require("../../helper/mailer/mailBody");
 
 const contactUs = async (name, email, description) => {
-  console.log(name, email, description);
-
   try {
     const subject = `Contacted by: ${email}`;
     const body = mailerBody.getMailBody(email, subject, description);
