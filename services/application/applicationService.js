@@ -3,7 +3,7 @@ const mailerBody = require("../../helper/mailer/mailBody");
 
 const contactUs = async (name, email, description) => {
   try {
-    const subject = `Contacted by: ${email}`;
+    const subject = `Contacted by: ${name}`;
     const body = mailerBody.getMailBody(email, subject, description);
     await mailService.sendMail(subject, body);
   } catch (e) {
