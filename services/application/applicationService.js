@@ -12,7 +12,7 @@ const contactUs = async (name, email, description) => {
   }
 
   return {
-    message: "Your message has been sent successfully",
+    message: "Your message has been sent successfully, we will back to you",
     statusCode: 200,
   };
 };
