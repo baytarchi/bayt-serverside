@@ -11,18 +11,23 @@ const addProject = async (req, res) => {
     gross_built_area,
     project_location,
     category,
+    isPortfolio,
+    architects,
+    captions,
   } = req.body;
 
-  const { error, errorMessage } = await categoryHelper.categoryValidation(
-    Category,
-    category
-  );
+  console.log(captions, "req.body;");
 
-  if (error) {
-    res.status(StatusCodes.CLIENT_ERROR.BAD_REQUEST).json({
-      message: errorMessage,
-    });
-  }
+  // const { error, errorMessage } = await categoryHelper.categoryValidation(
+  //   Category,
+  //   category
+  // );
+
+  // if (error) {
+  //   res.status(StatusCodes.CLIENT_ERROR.BAD_REQUEST).json({
+  //     message: errorMessage,
+  //   });
+  // }
 
   const project_data = {
     project_name,
@@ -31,7 +36,12 @@ const addProject = async (req, res) => {
     gross_built_area,
     project_location,
     category,
+    isPortfolio,
+    architects,
   };
+
+  const photos = req.files;
+  console.log(photos, "files");
 
   const { message, statusCode } = await projectService.addProject(project_data);
 
