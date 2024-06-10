@@ -1,4 +1,5 @@
 const projectService = require("../../services/project/projectService");
+const PhotoService = require("../../helper/image/image-server");
 const categoryHelper = require("../../helper/category/categoryValidation");
 const Category = require("../../models/category");
 const StatusCodes = require("../../config");
@@ -16,7 +17,7 @@ const addProject = async (req, res) => {
     captions,
   } = req.body;
 
-  console.log(captions, "req.body;");
+  // console.log(captions, "req.body;");
 
   // const { error, errorMessage } = await categoryHelper.categoryValidation(
   //   Category,
@@ -29,6 +30,22 @@ const addProject = async (req, res) => {
   //   });
   // }
 
+  const photos = req.files;
+  // console.log(photos, "files");
+
+  const photoService = new PhotoService(req.files);
+  let projectPhotoLinks;
+  await photoService
+    .upload()
+    .then((link) => {
+      projectPhotoLinks = link;
+    })
+    .catch((error) => {
+      console.error("Error uploading photo:", error);
+    });
+
+  console.log(projectPhotoLinks);
+
   const project_data = {
     project_name,
     project_description,
@@ -39,9 +56,6 @@ const addProject = async (req, res) => {
     isPortfolio,
     architects,
   };
-
-  const photos = req.files;
-  console.log(photos, "files");
 
   const { message, statusCode } = await projectService.addProject(project_data);
 

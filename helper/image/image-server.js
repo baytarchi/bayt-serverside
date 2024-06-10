@@ -2,27 +2,51 @@ const axios = require("axios");
 const IMGBB_API_KEY = "10705e06a5fe1a6810e87ccdeff6eb5a";
 
 class PhotoService {
-  constructor(file) {
-    this.file = file;
+  constructor(files) {
+    this.files = files;
   }
 
   upload = async () => {
-    const response = await axios.post(
-      "https://api.imgbb.com/1/upload",
-      {
-        key: IMGBB_API_KEY,
-        image: this.file?.buffer.toString("base64"),
-      },
-      { headers: { "content-type": "multipart/form-data" } }
-    );
+    const uploadPromises = this.files.map(async (file, index) => {
+      try {
+        if (!file.buffer) {
+          console.error(
+            `File at index ${index} does not have a buffer property.`
+          );
+          return null;
+        }
 
-    if (response.data && response.data.data && response.data.data.display_url) {
-      const profilePhotoLink = response.data.data.display_url;
-      return profilePhotoLink;
-    } else {
-      console.error("Failed to upload photo. Response:", response.data);
-      return null;
-    }
+        const base64Image = file.buffer.toString("base64");
+        const response = await axios.post(
+          "https://api.imgbb.com/1/upload",
+          {
+            key: IMGBB_API_KEY,
+            image: base64Image,
+          },
+          { headers: { "content-type": "multipart/form-data" } }
+        );
+
+        if (
+          response.data &&
+          response.data.data &&
+          response.data.data.display_url
+        ) {
+          return response.data.data.display_url;
+        } else {
+          console.error(
+            `Failed to upload photo at index ${index}. Response:`,
+            response.data
+          );
+          return null;
+        }
+      } catch (error) {
+        console.error(`Error uploading file at index ${index}:`, error);
+        return null;
+      }
+    });
+
+    const uploadResults = await Promise.all(uploadPromises);
+    return uploadResults.filter((url) => url !== null); // Filter out any null results
   };
 }
 
