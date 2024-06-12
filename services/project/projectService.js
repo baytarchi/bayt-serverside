@@ -3,21 +3,31 @@ const { statusCodes } = require("../../config");
 
 const addProject = async (project_data) => {
   const {
+    isPortfolio,
     project_name,
     project_description,
-    completion_year,
+    category,
+    architects,
     gross_built_area,
     project_location,
-    category,
+    completion_year,
+    captions,
+    featured_image,
+    project_photo_links,
   } = project_data;
 
   const new_project_data = {
+    isPortfolio,
     project_name,
     project_description,
-    completion_year,
+    category,
+    architects,
     gross_built_area,
     project_location,
-    category,
+    completion_year,
+    captions,
+    featured_image,
+    project_photo_links,
   };
 
   const project = new Project({

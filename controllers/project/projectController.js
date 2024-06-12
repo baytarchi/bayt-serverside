@@ -6,14 +6,14 @@ const StatusCodes = require("../../config");
 
 const addProject = async (req, res) => {
   const {
+    isPortfolio,
     project_name,
     project_description,
-    completion_year,
+    category,
+    architects,
     gross_built_area,
     project_location,
-    category,
-    isPortfolio,
-    architects,
+    completion_year,
     captions,
   } = req.body;
 
@@ -30,31 +30,32 @@ const addProject = async (req, res) => {
   //   });
   // }
 
-  const photos = req.files;
-  // console.log(photos, "files");
-
   const photoService = new PhotoService(req.files);
-  let projectPhotoLinks;
+  let project_photo_links;
+
   await photoService
     .upload()
     .then((link) => {
-      projectPhotoLinks = link;
+      project_photo_links = link;
     })
     .catch((error) => {
       console.error("Error uploading photo:", error);
     });
 
-  console.log(projectPhotoLinks);
+  console.log(project_photo_links);
 
   const project_data = {
+    isPortfolio: isPortfolio == "true" ? true : false,
     project_name,
     project_description,
-    completion_year,
+    category,
+    architects,
     gross_built_area,
     project_location,
-    category,
-    isPortfolio,
-    architects,
+    completion_year,
+    captions,
+    featured_image: project_photo_links[0],
+    project_photo_links,
   };
 
   const { message, statusCode } = await projectService.addProject(project_data);

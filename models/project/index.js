@@ -1,3 +1,4 @@
+const { boolean } = require("joi");
 const { model, Schema } = require("mongoose");
 const slugify = require("slugify");
 
@@ -7,6 +8,10 @@ const projectSchema = new Schema(
       type: String,
       required: false,
     },
+    isPortfolio: {
+      type: Boolean,
+      required: true,
+    },
     project_name: {
       type: String,
       required: true,
@@ -15,7 +20,11 @@ const projectSchema = new Schema(
       type: String,
       required: true,
     },
-    completion_year: {
+    category: {
+      type: String,
+      required: true,
+    },
+    architects: {
       type: String,
       required: false,
     },
@@ -27,9 +36,21 @@ const projectSchema = new Schema(
       type: String,
       required: false,
     },
-    category: {
+    completion_year: {
       type: String,
-      required: true,
+      required: false,
+    },
+    featured_image: {
+      type: String,
+      required: false,
+    },
+    captions: {
+      type: [String],
+      required: false,
+    },
+    project_photo_links: {
+      type: [String],
+      required: false,
     },
   },
   { versionKey: false }
