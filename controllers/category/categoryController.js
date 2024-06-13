@@ -34,6 +34,32 @@ const addCategory = async (req, res) => {
   });
 };
 
+const updateCategory = async (req, res) => {
+  const { category_name } = req.body;
+  const { category_id } = req.params;
+
+  if (!category_id) {
+    return res.status(400).json({
+      message: "Please provide a category",
+    });
+  }
+
+  if (!category_name) {
+    return res.status(400).json({
+      message: "Please provide the updated category name",
+    });
+  }
+
+  const { message, statusCode } = await categoryService.updateCategory(
+    category_id,
+    category_name
+  );
+
+  res.status(statusCode).json({
+    message,
+  });
+};
+
 const getCategories = async (req, res) => {
   const { message, categories, statusCode } =
     await categoryService.getCategories();
@@ -44,7 +70,27 @@ const getCategories = async (req, res) => {
   });
 };
 
+const deleteCategory = async (req, res) => {
+  const { category_id } = req.params;
+
+  if (!category_id) {
+    return res.status(400).json({
+      message: "Please provide a category",
+    });
+  }
+
+  const { message, statusCode } = await categoryService.deleteCategory(
+    category_id
+  );
+
+  res.status(statusCode).json({
+    message,
+  });
+};
+
 module.exports = {
   getCategories,
   addCategory,
+  updateCategory,
+  deleteCategory,
 };
