@@ -7,5 +7,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.post("/", upload.single("member_image"), teamController.addTeamMember);
+router.get("/", teamController.getTeamMembers);
 
 module.exports = router;

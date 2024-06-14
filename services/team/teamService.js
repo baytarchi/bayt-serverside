@@ -14,6 +14,17 @@ const addTeamMember = async (member_data) => {
   };
 };
 
+const getTeamMembers = async () => {
+  const team_members = await Team.find({});
+
+  return {
+    message: "Team Member Featched Successfully",
+    team_members,
+    statusCode: statusCodes.SUCCESSFUL.SUCCESS,
+  };
+};
+
 module.exports = {
   addTeamMember,
+  getTeamMembers,
 };

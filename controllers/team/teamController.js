@@ -38,6 +38,16 @@ const addTeamMember = async (req, res) => {
   });
 };
 
+const getTeamMembers = async (req, res) => {
+  const { message, team_members, statusCode } =
+    await teamService.getTeamMembers();
+
+  res.status(statusCode).json({
+    message,
+    team_members,
+  });
+};
+
 // const updateTeamMember = async (req, res) => {
 //   const { category_name } = req.body;
 //   const { category_id } = req.params;
@@ -64,16 +74,6 @@ const addTeamMember = async (req, res) => {
 //   });
 // };
 
-// const getTeamMembers = async (req, res) => {
-//   const { message, categories, statusCode } =
-//     await categoryService.getCategories();
-
-//   res.status(statusCode).json({
-//     message,
-//     categories,
-//   });
-// };
-
 // const deleteTeamMember = async (req, res) => {
 //   const { category_id } = req.params;
 
@@ -94,4 +94,5 @@ const addTeamMember = async (req, res) => {
 
 module.exports = {
   addTeamMember,
+  getTeamMembers,
 };
