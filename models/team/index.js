@@ -1,0 +1,18 @@
+const { Schema, default: mongoose, model } = require("mongoose");
+
+const teamSchema = new Schema({
+  member_name: {
+    type: String,
+    required: true,
+  },
+  member_image: {
+    type: String,
+    required: true,
+  },
+  linkedin: {
+    type: String,
+    required: false,
+  },
+});
+
+module.exports = model("Team", teamSchema);
