@@ -2,13 +2,11 @@ const teamService = require("../../services/team/teamService");
 const PhotoService = require("../../helper/image/single-image-service");
 
 const addTeamMember = async (req, res) => {
-  const { member_name } = req.body;
+  const { member_name, position } = req.body;
 
-  console.log(member_name, "asdasdsad");
-
-  if (!member_name) {
+  if (!member_name || !position) {
     return res.status(400).json({
-      message: "Please provide the member name",
+      message: "Please provide the required information",
     });
   }
 
@@ -24,10 +22,9 @@ const addTeamMember = async (req, res) => {
       console.error("Error uploading photo:", error);
     });
 
-  console.log(member_photo);
-
   const member_data = {
     member_name,
+    position,
     member_image: member_photo,
   };
 
