@@ -17,8 +17,6 @@ const addProject = async (req, res) => {
     captions,
   } = req.body;
 
-  // console.log(captions, "req.body;");
-
   // const { error, errorMessage } = await categoryHelper.categoryValidation(
   //   Category,
   //   category
@@ -42,8 +40,6 @@ const addProject = async (req, res) => {
       console.error("Error uploading photo:", error);
     });
 
-  console.log(project_photo_links);
-
   const project_data = {
     isPortfolio: isPortfolio == "true" ? true : false,
     project_name,
@@ -66,7 +62,11 @@ const addProject = async (req, res) => {
 };
 
 const getProjects = async (req, res) => {
-  const { message, projects, statusCode } = await projectService.getProjects();
+  const category_name = req.query.category;
+
+  const { message, projects, statusCode } = await projectService.getProjects(
+    category_name
+  );
 
   res.status(statusCode).json({
     message,

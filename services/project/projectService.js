@@ -1,4 +1,5 @@
 const Project = require("../../models/project");
+const Category = require("../../models/category");
 const { statusCodes } = require("../../config");
 
 const addProject = async (project_data) => {
@@ -42,8 +43,22 @@ const addProject = async (project_data) => {
   };
 };
 
-const getProjects = async () => {
-  const projects = await Project.find();
+const getProjects = async (category_name) => {
+  let projects;
+  if (category_name) {
+    const category = await Category.findOne({ category_name: category_name });
+
+    if (!category) {
+      return {
+        message: "There is no such category",
+        statusCode: statusCodes.CLIENT_ERROR.NOT_FOUND,
+      };
+    }
+
+    projects = await Project.find({ category: category._id });
+  } else {
+    projects = await Project.find();
+  }
 
   if (!projects) {
     return {
