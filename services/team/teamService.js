@@ -24,7 +24,26 @@ const getTeamMembers = async () => {
   };
 };
 
+const deleteTeamMember = async (team_member_id) => {
+  const team = await Team.findById(team_member_id);
+
+  if (!team) {
+    return {
+      message: "Team not found",
+      statusCode: statusCodes.CLIENT_ERROR.BAD_REQUEST,
+    };
+  }
+
+  await Team.findByIdAndDelete(team_member_id);
+
+  return {
+    message: "Team Member deleted successfully",
+    statusCode: statusCodes.SUCCESSFUL.SUCCESS,
+  };
+};
+
 module.exports = {
   addTeamMember,
   getTeamMembers,
+  deleteTeamMember,
 };

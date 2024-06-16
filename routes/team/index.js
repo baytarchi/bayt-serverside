@@ -8,5 +8,6 @@ const upload = multer({ storage: storage });
 
 router.post("/", upload.single("member_image"), teamController.addTeamMember);
 router.get("/", teamController.getTeamMembers);
+router.delete("/:team_member_id", teamController.deleteTeamMember);
 
 module.exports = router;

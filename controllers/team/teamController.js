@@ -71,25 +71,26 @@ const getTeamMembers = async (req, res) => {
 //   });
 // };
 
-// const deleteTeamMember = async (req, res) => {
-//   const { category_id } = req.params;
+const deleteTeamMember = async (req, res) => {
+  const { team_member_id } = req.params;
 
-//   if (!category_id) {
-//     return res.status(400).json({
-//       message: "Please provide a category",
-//     });
-//   }
+  if (!team_member_id) {
+    return res.status(400).json({
+      message: "Please provide a team member id",
+    });
+  }
 
-//   const { message, statusCode } = await categoryService.deleteCategory(
-//     category_id
-//   );
+  const { message, statusCode } = await teamService.deleteTeamMember(
+    team_member_id
+  );
 
-//   res.status(statusCode).json({
-//     message,
-//   });
-// };
+  res.status(statusCode).json({
+    message,
+  });
+};
 
 module.exports = {
   addTeamMember,
   getTeamMembers,
+  deleteTeamMember,
 };

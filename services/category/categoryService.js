@@ -48,7 +48,6 @@ const getCategories = async () => {
 };
 
 const deleteCategory = async (category_id) => {
-  console.log(category_id, "category_id");
   const category = await Category.findById(category_id);
 
   if (!category) {
