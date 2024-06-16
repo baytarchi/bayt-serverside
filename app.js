@@ -3,12 +3,15 @@ const bodyParser = require("body-parser");
 const router = require("./routes");
 const middleware = require("./middleware/common");
 const Database = require("./database");
+const cors = require("cors");
+
 require("dotenv").config();
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(...middleware);
+app.options("*", cors());
 
 router.registerApplicationRoutes(app);
 
