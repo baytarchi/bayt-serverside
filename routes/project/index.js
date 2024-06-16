@@ -9,5 +9,6 @@ const upload = multer({ storage: storage });
 router.post("/", upload.array("photos"), projectController.addProject);
 router.get("/", projectController.getProjects);
 router.get("/:project_slug", projectController.getProject);
+router.delete("/:project_id", projectController.deleteProject);
 
 module.exports = router;

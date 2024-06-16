@@ -87,8 +87,21 @@ const getProject = async (req, res) => {
   });
 };
 
+const deleteProject = async (req, res) => {
+  const { project_id } = req.params;
+
+  const { message, statusCode } = await projectService.deleteProject(
+    project_id
+  );
+
+  res.status(statusCode).json({
+    message,
+  });
+};
+
 module.exports = {
   addProject,
   getProjects,
   getProject,
+  deleteProject,
 };

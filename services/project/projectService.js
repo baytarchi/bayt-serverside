@@ -91,8 +91,27 @@ const getProject = async (project_slug) => {
   };
 };
 
+const deleteProject = async (project_id) => {
+  const project = await Project.findById(project_id);
+
+  if (!project) {
+    return {
+      message: "project not found",
+      statusCode: statusCodes.CLIENT_ERROR.BAD_REQUEST,
+    };
+  }
+
+  await Project.findByIdAndDelete(project_id);
+
+  return {
+    message: "Project deleted successfully",
+    statusCode: statusCodes.SUCCESSFUL.SUCCESS,
+  };
+};
+
 module.exports = {
   addProject,
   getProjects,
   getProject,
+  deleteProject,
 };
