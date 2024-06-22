@@ -1,5 +1,5 @@
 module.exports = {
-  "/api/user": require("./admin"),
+  "/api/admin": require("./admin"),
   "/api/category": require("./category"),
   "/api/project": require("./project"),
   "/api/application/": require("./application"),
