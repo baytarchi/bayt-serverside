@@ -5,6 +5,7 @@ const { statusCodes } = require("../../config");
 const addProject = async (project_data) => {
   const {
     isPortfolio,
+    isFeature,
     project_name,
     project_description,
     category,
@@ -19,6 +20,7 @@ const addProject = async (project_data) => {
 
   const new_project_data = {
     isPortfolio,
+    isFeature,
     project_name,
     project_description,
     category,
@@ -55,9 +57,13 @@ const getProjects = async (category_name) => {
       };
     }
 
-    projects = await Project.find({ category: category._id });
+    projects = await Project.find({ category: category._id })
+      .populate("category", "category_name")
+      .exec();
   } else {
-    projects = await Project.find();
+    projects = await Project.find()
+      .populate("category", "category_name")
+      .exec();
   }
 
   if (!projects) {
@@ -75,7 +81,9 @@ const getProjects = async (category_name) => {
 };
 
 const getProject = async (project_slug) => {
-  const project = await Project.findOne({ project_slug: project_slug });
+  const project = await Project.findOne({
+    project_slug: project_slug,
+  }).populate("category", "category_name");
 
   if (!project) {
     return {
@@ -109,9 +117,62 @@ const deleteProject = async (project_id) => {
   };
 };
 
+const updateProject = async (project_id, project_data) => {
+  const {
+    isPortfolio,
+    isFeature,
+    project_name,
+    project_description,
+    category,
+    architects,
+    gross_built_area,
+    project_location,
+    completion_year,
+    captions,
+    featured_image,
+    project_photo_links,
+  } = project_data;
+
+  const new_project_data = {
+    isPortfolio,
+    isFeature,
+    project_name,
+    project_description,
+    category,
+    architects,
+    gross_built_area,
+    project_location,
+    completion_year,
+    captions,
+    featured_image,
+    project_photo_links,
+  };
+
+  const project = await Project.findById(project_id);
+
+  if (!project) {
+    return {
+      message: "project not found",
+      statusCode: statusCodes.CLIENT_ERROR.BAD_REQUEST,
+    };
+  }
+
+  await Project.findByIdAndUpdate(project_id, new_project_data, {
+    new: true,
+  });
+
+  console.log(project_data, "project_data updated");
+
+  return {
+    message: "Project updated successfully",
+    statusCode: statusCodes.SUCCESSFUL.CREATED,
+  };
+};
+
 module.exports = {
   addProject,
   getProjects,
   getProject,
   deleteProject,
+  updateProject,
 };

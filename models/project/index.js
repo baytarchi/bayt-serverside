@@ -1,5 +1,5 @@
 const { boolean } = require("joi");
-const { model, Schema } = require("mongoose");
+const { model, Schema, default: mongoose } = require("mongoose");
 const slugify = require("slugify");
 
 const projectSchema = new Schema(
@@ -12,6 +12,10 @@ const projectSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    isFeature: {
+      type: Boolean,
+      required: true,
+    },
     project_name: {
       type: String,
       required: true,
@@ -20,10 +24,7 @@ const projectSchema = new Schema(
       type: String,
       required: true,
     },
-    category: {
-      type: String,
-      required: true,
-    },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
     architects: {
       type: String,
       required: false,
