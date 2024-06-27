@@ -7,7 +7,11 @@ module.exports = [
   express.urlencoded({ extended: true }),
   cookieParser(),
   cors({
-    origin: ["https://bayt-client.netlify.app", "http://localhost:5173"],
+    origin: [
+      "https://bayt-client.netlify.app",
+      "http://localhost:5173",
+      "https://baytarchitects.com/",
+    ],
     methods: ["HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
     allowedHeaders: [
