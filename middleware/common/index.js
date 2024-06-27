@@ -10,7 +10,7 @@ module.exports = [
     origin: [
       "https://bayt-client.netlify.app",
       "http://localhost:5173",
-      "https://baytarchitects.com/",
+      "https://baytarchitects.com",
     ],
     methods: ["HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
