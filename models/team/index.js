@@ -14,8 +14,8 @@ const teamSchema = new Schema(
       type: String,
       required: true,
     },
-    linkedin: {
-      type: String,
+    isWorker: {
+      type: Boolean,
       required: false,
     },
   },

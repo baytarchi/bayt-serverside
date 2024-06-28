@@ -59,10 +59,12 @@ const getProjects = async (category_name) => {
 
     projects = await Project.find({ category: category._id })
       .populate("category", "category_name")
+      .sort({ createdAt: -1 })
       .exec();
   } else {
     projects = await Project.find()
       .populate("category", "category_name")
+      .sort({ createdAt: -1 })
       .exec();
   }
 
