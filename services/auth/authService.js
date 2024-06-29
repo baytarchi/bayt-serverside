@@ -15,8 +15,6 @@ const signin = async (user) => {
 
   const existing_user = await Admin.findOne({ email }).lean();
 
-  console.log(existing_user, "existing_user");
-
   if (!existing_user) {
     return {
       message: "Admin not found",

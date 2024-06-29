@@ -16,8 +16,6 @@ class TokenService {
       return null;
     }
 
-    console.log(process.env.JWT_SECRET_TOKEN, "env token");
-
     return jwt.sign(payload, process.env.JWT_SECRET_TOKEN, {
       audience: "*",
       algorithm: "HS256",

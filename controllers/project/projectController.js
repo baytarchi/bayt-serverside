@@ -28,6 +28,9 @@ const addProject = async (req, res) => {
   //     message: errorMessage,
   //   });
   // }
+  const safeCaptions = (captions ?? []).map((caption) =>
+    caption === "undefined" ? "" : caption
+  );
 
   const photoService = new PhotoService(req.files);
   let project_photo_links;
@@ -51,7 +54,7 @@ const addProject = async (req, res) => {
     gross_built_area,
     project_location,
     completion_year,
-    captions,
+    captions: safeCaptions,
     featured_image: project_photo_links[0],
     project_photo_links,
   };
