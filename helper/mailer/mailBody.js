@@ -34,6 +34,59 @@ const getMailBody = (fromEmail, subject, description) => {
 </body>`;
 };
 
+const getCareerMailBody = (name, email, phoneNumber) => {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Job Application</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 20px;
+          }
+          .content {
+            margin-bottom: 20px;
+          }
+          .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Job Application</h1>
+          </div>
+          <div class="content">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+            <p>Attached are my CV and cover letter for your consideration.</p>
+          </div>
+          <div class="footer">
+            <p>Thank you for your time and consideration.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
 module.exports = {
   getMailBody,
+  getCareerMailBody,
 };
