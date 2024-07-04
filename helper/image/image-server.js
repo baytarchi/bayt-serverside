@@ -1,5 +1,5 @@
 const axios = require("axios");
-const IMGBB_API_KEY = "10705e06a5fe1a6810e87ccdeff6eb5a";
+const IMGBB_API_KEY = "91ead0c15547e73027a2f890b81fba24";
 
 class PhotoService {
   constructor(files) {

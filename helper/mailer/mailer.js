@@ -1,18 +1,8 @@
 const nodemailer = require("nodemailer");
 
-const sendMail = async (subject, body,attachments) => {
+const sendMail = async (subject, body, attachments) => {
   const senderMail = process.env.EMAIL_USERNAME;
   const senderPassword = process.env.EMAIL_PASSWORD;
-
-  // const mailOptions = {
-  //   from: senderMail,
-  //   to: senderMail,
-  //   subject: subject,
-  //   replyTo: senderMail,
-  //   html: body,
-  // };
-
-  console.log(attachments);
 
   const mailOptions = {
     from: senderMail,
@@ -21,9 +11,6 @@ const sendMail = async (subject, body,attachments) => {
     html: body,
     ...(attachments.length > 0 && { attachments }),
   };
-
-  console.log(senderPassword);
-  console.log(senderMail);
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
