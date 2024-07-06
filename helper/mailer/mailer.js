@@ -4,13 +4,23 @@ const sendMail = async (subject, body, attachments) => {
   const senderMail = process.env.EMAIL_USERNAME;
   const senderPassword = process.env.EMAIL_PASSWORD;
 
-  const mailOptions = {
-    from: senderMail,
-    to: senderMail,
-    subject: subject,
-    html: body,
-    ...(attachments.length > 0 && { attachments }),
-  };
+  let mailOptions;
+  if (attachments && attachments.length > 0) {
+    mailOptions = {
+      from: senderMail,
+      to: senderMail,
+      subject: subject,
+      html: body,
+      attachments: attachments,
+    };
+  } else {
+    mailOptions = {
+      from: senderMail,
+      to: senderMail,
+      subject: subject,
+      html: body,
+    };
+  }
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -21,9 +31,6 @@ const sendMail = async (subject, body, attachments) => {
       pass: senderPassword,
     },
   });
-
-  console.log(senderPassword);
-  console.log(senderMail);
 
   try {
     await transporter.sendMail(mailOptions);
