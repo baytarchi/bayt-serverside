@@ -11,6 +11,7 @@ module.exports = [
       "https://bayt-client.netlify.app",
       "http://localhost:5173",
       "https://baytarchitects.com",
+      "http://bayt-server-production.up.railway.app",
     ],
     methods: ["HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
