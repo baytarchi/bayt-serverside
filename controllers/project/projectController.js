@@ -28,8 +28,8 @@ const addProject = async (req, res) => {
   //     message: errorMessage,
   //   });
   // }
-  const safeCaptions = (captions ?? []).map((caption) =>
-    caption === "undefined" ? "" : caption
+  const safeCaptions = (Array.isArray(captions) ? captions : [captions]).map(
+    (caption) => (caption === "undefined" ? "" : caption)
   );
 
   const photoService = new PhotoService(req.files);

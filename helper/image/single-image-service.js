@@ -1,5 +1,6 @@
 const axios = require("axios");
-const IMGBB_API_KEY = "91ead0c15547e73027a2f890b81fba24";
+require("dotenv").config();
+const IMGBB_API_KEY = process.env.IMGBB_API_KEY;
 
 class PhotoService {
   constructor(file) {
