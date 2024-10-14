@@ -8,7 +8,6 @@ module.exports = [
   cookieParser(),
   cors({
     origin: [
-      "https://bayt-client.netlify.app",
       "http://localhost:5173",
       "https://baytarchitects.com",
       "http://bayt-server-production.up.railway.app",
