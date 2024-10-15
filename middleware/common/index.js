@@ -2,16 +2,14 @@ const cors = require("cors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
+const allowedOrigins = process.env.CORS_ORIGINS.split(",");
+
 module.exports = [
   express.json({ limit: "2mb" }),
   express.urlencoded({ extended: true }),
   cookieParser(),
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://baytarchitects.com",
-      "http://bayt-server-production.up.railway.app",
-    ],
+    origin: allowedOrigins,
     methods: ["HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
     allowedHeaders: [
