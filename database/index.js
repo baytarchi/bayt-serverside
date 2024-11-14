@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const host = `mongodb+srv://${process.env.USER_NAME}:${process.env.PASSWORD}@cluster0.hit5zz1.mongodb.net/${process.env.DATABASE}`;
+const host = `mongodb+srv://${process.env.USER_NAME}:${process.env.PASSWORD}@cluster0.bcfqp.mongodb.net/${process.env.DATABASE}`;
 
 const authentication = {
   readPreference: "primary",
