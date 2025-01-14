@@ -6,6 +6,8 @@ const addTeamMember = async (member_data) => {
     ...member_data,
   });
 
+  console.log(team);
+
   team.save();
 
   return {
