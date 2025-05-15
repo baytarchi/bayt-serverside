@@ -20,6 +20,9 @@ const addTeamMember = async (req, res) => {
     })
     .catch((error) => {
       console.error("Error uploading photo:", error);
+      res.status(400).json({
+        message: `Error uploading photo:: ${error}`,
+      });
     });
 
   const member_data = {
@@ -71,6 +74,9 @@ const updateTeamMember = async (req, res) => {
       })
       .catch((error) => {
         console.error("Error uploading photo:", error);
+        res.status(400).json({
+          message: `Error uploading photo:: ${error}`,
+        });
       });
   }
 
