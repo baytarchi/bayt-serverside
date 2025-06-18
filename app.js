@@ -15,9 +15,12 @@ app.options("*", cors());
 
 router.registerApplicationRoutes(app);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
-  new Database().connect().then(() => {
-    console.log("Database Connected");
-  });
+new Database().connect().then(() => {
+  console.log("Database Connected");
 });
+
+// app.listen(process.env.PORT, () => {
+//   console.log(`Server is running on port ${process.env.PORT}`);
+// });
+
+module.exports = app;
