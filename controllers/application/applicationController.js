@@ -22,7 +22,6 @@ const contactUs = async (req, res) => {
 
 const career = async (req, res) => {
   const { name, email, phone_number } = req.body;
-  console.log(req.body);
   const cv = req.files.cv[0];
   const coverLetter = req.files.coverLetter[0];
 

@@ -1,8 +1,5 @@
 const projectService = require("../../services/project/projectService");
-const PhotoService = require("../../helper/image/image-server");
-const categoryHelper = require("../../helper/category/categoryValidation");
-const Category = require("../../models/category");
-const StatusCodes = require("../../config");
+const { multipleUpload } = require("../../utils/cloudinary");
 
 const addProject = async (req, res) => {
   const {
@@ -18,34 +15,19 @@ const addProject = async (req, res) => {
     captions,
   } = req.body;
 
-  // const { error, errorMessage } = await categoryHelper.categoryValidation(
-  //   Category,
-  //   category
-  // );
-
-  // if (error) {
-  //   res.status(StatusCodes.CLIENT_ERROR.BAD_REQUEST).json({
-  //     message: errorMessage,
-  //   });
-  // }
   const safeCaptions = (Array.isArray(captions) ? captions : [captions]).map(
     (caption) => (caption === "undefined" ? "" : caption)
   );
 
-  const photoService = new PhotoService(req.files);
   let project_photo_links;
 
-  await photoService
-    .upload()
-    .then((link) => {
-      project_photo_links = link;
-    })
-    .catch((error) => {
-      console.error("Error uploading photo:", error);
-      res.status(400).json({
-        message: `Error uploading photo:: ${error}`,
-      });
-    });
+  if (req.files && req.files.length > 0) {
+    try {
+      project_photo_links = await multipleUpload(req.files);
+    } catch (error) {
+      throw new apiError(500, "Image upload failed");
+    }
+  }
 
   const project_data = {
     isPortfolio: isPortfolio == "true" ? true : false,
@@ -85,31 +67,15 @@ const updateProject = async (req, res) => {
     photoLinks,
   } = req.body;
 
-  // const { error, errorMessage } = await categoryHelper.categoryValidation(
-  //   Category,
-  //   category
-  // );
-
-  // if (error) {
-  //   res.status(StatusCodes.CLIENT_ERROR.BAD_REQUEST).json({
-  //     message: errorMessage,
-  //   });
-  // }
-
-  const photoService = new PhotoService(req.files);
   let new_project_photo_links;
 
-  await photoService
-    .upload()
-    .then((link) => {
-      new_project_photo_links = link;
-    })
-    .catch((error) => {
-      console.error("Error uploading photo:", error);
-      res.status(400).json({
-        message: `Error uploading photo:: ${error}`,
-      });
-    });
+  if (req.files && req.files.length > 0) {
+    try {
+      new_project_photo_links = await multipleUpload(req.files);
+    } catch (error) {
+      throw new apiError(500, "Image upload failed");
+    }
+  }
 
   const project_data = {
     isPortfolio: isPortfolio == "true" ? true : false,

@@ -1,5 +1,5 @@
 const teamService = require("../../services/team/teamService");
-const PhotoService = require("../../helper/image/single-image-service");
+const { singleUpload } = require("../../utils/cloudinary");
 
 const addTeamMember = async (req, res) => {
   const { member_name, position, isWorker } = req.body;
@@ -10,20 +10,15 @@ const addTeamMember = async (req, res) => {
     });
   }
 
-  const photoService = new PhotoService(req.file);
   let member_photo;
 
-  await photoService
-    .upload()
-    .then((link) => {
-      member_photo = link;
-    })
-    .catch((error) => {
-      console.error("Error uploading photo:", error);
-      res.status(400).json({
-        message: `Error uploading photo:: ${error}`,
-      });
-    });
+  if (req.file) {
+    try {
+      member_photo = await singleUpload(req.file);
+    } catch (error) {
+      throw new apiError(500, "Image upload failed");
+    }
+  }
 
   const member_data = {
     member_name,
@@ -66,18 +61,11 @@ const updateTeamMember = async (req, res) => {
   if (member_image_link) {
     member_photo = member_image_link;
   } else {
-    const photoService = new PhotoService(req.file);
-    await photoService
-      .upload()
-      .then((link) => {
-        member_photo = link;
-      })
-      .catch((error) => {
-        console.error("Error uploading photo:", error);
-        res.status(400).json({
-          message: `Error uploading photo:: ${error}`,
-        });
-      });
+    try {
+      member_photo = await singleUpload(req.file);
+    } catch (error) {
+      throw new apiError(500, "Image upload failed");
+    }
   }
 
   const member_data = {
