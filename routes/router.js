@@ -4,4 +4,5 @@ module.exports = {
   "/api/project": require("./project"),
   "/api/application/": require("./application"),
   "/api/team/": require("./team"),
+  "/api/upload/": require("./upload"),
 };

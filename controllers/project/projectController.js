@@ -12,26 +12,30 @@ const addProject = async (req, res) => {
     gross_built_area,
     project_location,
     completion_year,
+    photoLinks,
     captions,
   } = req.body;
 
+  // Normalize captions to array and sanitize "undefined"
   const safeCaptions = (Array.isArray(captions) ? captions : [captions]).map(
     (caption) => (caption === "undefined" ? "" : caption)
   );
 
-  let project_photo_links;
+  // Normalize photoLinks to array (handle string or array input)
+  const project_photo_links = Array.isArray(photoLinks)
+    ? photoLinks
+    : photoLinks
+    ? [photoLinks]
+    : [];
 
-  if (req.files && req.files.length > 0) {
-    try {
-      project_photo_links = await multipleUpload(req.files);
-    } catch (error) {
-      throw new apiError(500, "Image upload failed");
-    }
+  // Optional: handle case where no image link is provided
+  if (project_photo_links.length === 0) {
+    return res.status(400).json({ message: "No photo links provided" });
   }
 
   const project_data = {
-    isPortfolio: isPortfolio == "true" ? true : false,
-    isFeature: isFeature == "true" ? true : false,
+    isPortfolio: isPortfolio === "true",
+    isFeature: isFeature === "true",
     project_name,
     project_description,
     category,
@@ -40,15 +44,13 @@ const addProject = async (req, res) => {
     project_location,
     completion_year,
     captions: safeCaptions,
-    featured_image: project_photo_links[0],
+    featured_image: project_photo_links[0], // First image as featured
     project_photo_links,
   };
 
   const { message, statusCode } = await projectService.addProject(project_data);
 
-  res.status(statusCode).json({
-    message,
-  });
+  res.status(statusCode).json({ message });
 };
 
 const updateProject = async (req, res) => {
@@ -67,19 +69,36 @@ const updateProject = async (req, res) => {
     photoLinks,
   } = req.body;
 
-  let new_project_photo_links;
+  // Normalize captions
+  const safeCaptions = (Array.isArray(captions) ? captions : [captions]).map(
+    (caption) => (caption === "undefined" ? "" : caption)
+  );
 
+  // Normalize existing photo links
+  const existingPhotoLinks = Array.isArray(photoLinks)
+    ? photoLinks
+    : photoLinks
+    ? [photoLinks]
+    : [];
+
+  // Upload any new files if present
+  let newProjectPhotoLinks = [];
   if (req.files && req.files.length > 0) {
     try {
-      new_project_photo_links = await multipleUpload(req.files);
+      newProjectPhotoLinks = await multipleUpload(req.files);
     } catch (error) {
+      console.error("Image upload failed:", error);
       throw new apiError(500, "Image upload failed");
     }
   }
 
+  // Final combined photo list
+  const allPhotoLinks = [...existingPhotoLinks, ...newProjectPhotoLinks];
+
+  // Final payload
   const project_data = {
-    isPortfolio: isPortfolio == "true" ? true : false,
-    isFeature: isFeature == "true" ? true : false,
+    isPortfolio: isPortfolio === "true",
+    isFeature: isFeature === "true",
     project_name,
     project_description,
     category,
@@ -87,12 +106,9 @@ const updateProject = async (req, res) => {
     gross_built_area,
     project_location,
     completion_year,
-    captions,
-    featured_image: typeof photoLinks === "string" ? photoLinks : photoLinks[0],
-    project_photo_links: (typeof photoLinks === "string"
-      ? [photoLinks]
-      : photoLinks
-    ).concat(new_project_photo_links),
+    captions: safeCaptions,
+    featured_image: allPhotoLinks[0], // First image is featured
+    project_photo_links: allPhotoLinks,
   };
 
   const { message, statusCode } = await projectService.updateProject(
@@ -100,9 +116,7 @@ const updateProject = async (req, res) => {
     project_data
   );
 
-  res.status(statusCode).json({
-    message,
-  });
+  res.status(statusCode).json({ message });
 };
 
 const getProjects = async (req, res) => {
